@@ -1,11 +1,11 @@
 /**
  * Dependencies
  */
-var config = require('../config');
 var protocol = require('../protocol');
+var dotenv = require('dotenv').config()
 
 module.exports = function (req, res) {
-  if (req.header('Host') !== config.host ||
+  if (req.header('Host') !== process.env.HOST ||
       req.header('Content-Type') !== 'application/json') {
     res.status(400).end();
     return;

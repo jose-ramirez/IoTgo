@@ -2,6 +2,7 @@ var express = require('express');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var fs = require('fs')
 
 var routes = require('./routes');
 
@@ -14,7 +15,8 @@ app.use('/admin', express.static(__dirname + '/public/backend'));
 app.use(favicon(__dirname + '/public/frontend/favicon.png'));
 app.use(express.static(__dirname + '/public/frontend'));
 
-app.use(logger('dev'));
+var accessLogStream = fs.createWriteStream(__dirname + '/access.log', {flags: 'a'})
+app.use(logger('combined',  {"stream": accessLogStream}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

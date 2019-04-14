@@ -5,7 +5,7 @@ var express = require('express');
 var expressJwt = require('express-jwt');
 var jsonWebToken = require('jsonwebtoken');
 var unless = require('express-unless');
-var config = require('../config');
+var dotenv = require('dotenv').config()
 var db = require('../db');
 var User = db.User;
 var Device = db.Device;
@@ -19,8 +19,8 @@ var path = require('path');
 /**
  * Private variables
  */
-var recaptchaSecret = config.recaptcha.secret;
-var recaptchaUrl = config.recaptcha.url;
+var recaptchaSecret = process.env.RECAPTCHA_SECRET;
+var recaptchaUrl = process.env.RECAPTCHA_URL;
 
 var activedAccountOnly = function (req, res, next) {
   var isActivated = req.user.isActivated;
@@ -40,7 +40,7 @@ activedAccountOnly.unless = unless;
 module.exports = exports = express.Router();
 
 // Enable Json Web Token
-exports.use(expressJwt(config.jwt).unless({
+exports.use(expressJwt({secret: process.env.JWT_SECRET}).unless({
   path: ['/api/user/register', '/api/user/login', '/api/user/validate']
 }));
 
@@ -118,7 +118,7 @@ exports.route('/register').post(function (req, res) {
                   return;
                 }
                 res.send({
-                  jwt: jsonWebToken.sign(user, config.jwt.secret),
+                  jwt: jsonWebToken.sign(user, process.env.JWT_SECRET),
                   user: user
                 });
               });
@@ -213,7 +213,7 @@ exports.route('/login').post(function (req, res) {
     }
 
     res.send({
-      jwt: jsonWebToken.sign(user, config.jwt.secret),
+      jwt: jsonWebToken.sign(user, process.env.JWT_SECRET),
       user: user
     });
   });

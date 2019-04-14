@@ -8,18 +8,18 @@ var unless = require('express-unless');
 var request = require('request');
 var git_util = require('../lib/git-util');
 var ip_util = require('../lib/ip-util');
-var config = require('../config');
 var db = require('../db');
 var packagejson = require('../package');
 var User = db.User;
 var Device = db.Device;
 var FactoryDevice = db.FactoryDevice;
+var dotenv = require('dotenv').config()
 
 /**
  * Private variables and functions
  */
 var authenticate = function (email, password, callback) {
-  if (!email in config.admin || config.admin[email] !== password) {
+  if (process.env.ADMIN_EMAIL === '' || process.env.ADMIN_PASSWORD !== password) {
     callback(null, false);
     return;
   }
@@ -44,7 +44,7 @@ adminOnly.unless = unless;
 module.exports = exports = express.Router();
 
 // Enable Json Web Token
-exports.use(expressJwt(config.jwt).unless({
+exports.use(expressJwt({secret: process.env.JWT_SECRET}).unless({
   path: ['/api/admin/login']
 }));
 
@@ -73,7 +73,7 @@ exports.route('/login').post(function (req, res) {
     }
 
     res.send({
-      jwt: jsonWebToken.sign(user, config.jwt.secret),
+      jwt: jsonWebToken.sign(user, process.env.JWT_SECRET),
       user: user
     });
   });
@@ -82,7 +82,7 @@ exports.route('/login').post(function (req, res) {
 var upgrade = function (params, req, res) {
   ip_util.getLocalIP(function (ip) {
     request.post({
-      url: config.upgradeUrl,
+      url: process.env.UPGRADE_URL,
       form: {domain: params.domain, name: params.name, version: params.version, ip: ip}
     }, function (err, httpResponse, body) {
       if (err) {
@@ -104,7 +104,7 @@ var upgrade = function (params, req, res) {
 };
 
 exports.route('/checkUpdate').get(function (req, res) {
-  var domain = config.host;
+  var domain = process.env.HOST;
   git_util.isRepo(function (flag) {
     if (flag) {
       git_util.getRepoName(function (err, name) {
@@ -131,7 +131,7 @@ exports.route('/checkUpdate').get(function (req, res) {
 });
 // User management
 exports.route('/users').get(function (req, res) {
-  var limit = Number(req.query.limit) || config.page.limit;
+  var limit = Number(req.query.limit) || process.env.PAGE_LIMIT;
   var skip = Number(req.query.skip) || 0;
 
   var condition = {};
@@ -145,7 +145,7 @@ exports.route('/users').get(function (req, res) {
   }
 
   User.find(condition).select('-password').skip(skip).limit(limit)
-    .sort({createdAt: config.page.sort}).exec(function (err, users) {
+    .sort({createdAt: process.env.PAGE_SORT}).exec(function (err, users) {
       if (err) {
         res.send({
           error: 'Get user list failed!'
@@ -228,7 +228,7 @@ exports.route('/devices').get(function (req, res) {
   }
 
   Device.find(condition).select('-params').skip(skip).limit(limit)
-    .sort({createdAt: config.page.sort}).exec(function (err, devices) {
+    .sort({createdAt: process.env.PAGE_SORT}).exec(function (err, devices) {
       if (err) {
         res.send({
           error: 'Get device list failed!'
@@ -282,7 +282,7 @@ exports.route('/factorydevices').get(function (req, res) {
   }
 
   FactoryDevice.find(condition).skip(skip).limit(limit)
-    .sort({createdAt: config.page.sort})
+    .sort({createdAt: process.env.PAGE_SORT})
     .exec(function (err, factoryDevices) {
       if (err) {
         res.send({

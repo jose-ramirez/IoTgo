@@ -7,7 +7,7 @@ var interceptors = require('./interceptors');
 var EventEmitter = require('events').EventEmitter;
 var Device = require('../db').Device;
 var mixin = require('utils-merge');
-var config = require('../config');
+var dotenv = require('dotenv').config()
 var utils = require('./utils');
 
 /**
@@ -101,7 +101,7 @@ exports.postRequest = function (req, callback) {
       req: req,
       callback: callback,
       timer: setTimeout(removePendingRequest,
-        config.pendingRequestTimeout || 3000,
+        process.env.PENDING_REQUEST_TIMEOUT || 3000,
         req.sequence)
     };
   });

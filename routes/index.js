@@ -3,8 +3,8 @@
  */
 var express = require('express');
 var db = require('../db');
+var dotenv = require('dotenv').config()
 var http = require('./http');
-var config = require('../config');
 var user = require('./user');
 var admin = require('./admin');
 var debug = require('debug')('iotgo');
@@ -12,7 +12,7 @@ var debug = require('debug')('iotgo');
 /**
  * Connect to database first
  */
-db.connect(config.db.uri, config.db.options);
+db.connect(process.env.DB_URL, {useNewUrlParser: process.env.DB_OPTIONS_USE_NEW_PARSER});
 db.connection.on('error', function (err) {
   debug('Connect to DB failed!');
   debug(err);
