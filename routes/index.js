@@ -2,7 +2,7 @@
  * Dependencies
  */
 var express = require('express');
-var db = require('../db/index');
+var db = require('../db');
 var http = require('./http');
 var config = require('../config');
 var user = require('./user');

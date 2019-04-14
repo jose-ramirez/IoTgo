@@ -2,7 +2,7 @@
  * Dependencies
  */
 var config = require('../config');
-var protocol = require('../protocol/index');
+var protocol = require('../protocol');
 
 module.exports = function (req, res) {
   if (req.header('Host') !== config.host ||

@@ -2,7 +2,7 @@
  * Dependencies
  */
 var Server = require('ws').Server;
-var protocol = require('../protocol/index');
+var protocol = require('../protocol');
 var mixin = require('utils-merge');
 
 /**

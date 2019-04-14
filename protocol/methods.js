@@ -1,7 +1,7 @@
 /**
  * Dependencies
  */
-var db = require('../db/index');
+var db = require('../db');
 var User = db.User;
 var Device = db.Device;
 var FactoryDevice = db.FactoryDevice;
