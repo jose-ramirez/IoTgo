@@ -4,7 +4,7 @@ angular.module('iotgo')
   var host = $location.host() + ':' + $location.port();
 
   return {
-    httpServer: 'http://' + host,
+    httpServer: 'https://' + host,
     websocketServer: 'ws://' + host
   };
 } ]);
