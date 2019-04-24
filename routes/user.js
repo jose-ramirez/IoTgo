@@ -102,7 +102,7 @@ exports.route('/register').post(function (req, res) {
               return;
             }
             var host = req.get('Host');
-            var href = "http://" + host;
+            var href = "https://" + host;
             href += '/api/user/validate?email=' + email + '&token=' + token;
             if (user) {
               var _user = {email: email, href: href};
@@ -150,7 +150,7 @@ exports.route('/activeAccount').get(function (req, res) {
     }
     if (user) {
       var host = req.get('Host');
-      var href = "http://" + host;
+      var href = "https://" + host;
       var logo = href +'/images/logo.png';
       href += '/api/user/validate?email=' + email + '&token=' + token;
       var _user = {email: email, href: href, logo: logo};
