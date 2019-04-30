@@ -1,7 +1,5 @@
 #!/bin/sh
 
-su - my-jenkins-user
-
 ssh -tt jose@142.93.82.201 <<EOF
  cd ~/apps/iot.josers.org
  git pull
