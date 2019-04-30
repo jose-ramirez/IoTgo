@@ -1,7 +1,7 @@
 #!/usr/bin/env node
+var dotenv = require('dotenv').config()
 var debug = require('debug')('iotgo');
 var app = require('../app');
-var dotenv = require('dotenv').config()
 var websocket = require('../routes/websocket');
 
 app.set('port', process.env.PORT || 80);
