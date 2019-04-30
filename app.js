@@ -3,10 +3,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var fs = require('fs')
+var cors = require('cors')
 
 var routes = require('./routes');
 
 var app = express();
+if(process.env.DEBUG){
+  app.use(cors())
+}
 
 // web app backend
 app.use('/admin', favicon(__dirname + '/public/backend/favicon.png'));
