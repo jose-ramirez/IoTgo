@@ -1,9 +1,0 @@
-#!/bin/sh
-
-ssh -tt jose@142.93.82.201 <<EOF
- cd ~/apps/iot.josers.org
- git pull
- npm install
- pm2 restart www
- exit
-EOF
