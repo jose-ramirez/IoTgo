@@ -8,7 +8,7 @@ var cors = require('cors')
 var routes = require('./routes');
 
 var app = express();
-if(process.env.DEBUG){
+if(process.env.ENV === 'debug'){
   app.use(cors())
 }
 

@@ -102,7 +102,7 @@ exports.route('/register').post(function (req, res) {
               return;
             }
             var href = `${req.protocol}://${req.hostname}`;
-            if(process.env.DEBUG){
+            if(process.env.ENV === 'debug'){
               href = `${href}:${process.env.PORT}`
             }
             var logo = `${href}/images/logo.png`;
@@ -154,7 +154,7 @@ exports.route('/activeAccount').get(function (req, res) {
     }
     if (user) {
       var href = `${req.protocol}://${req.hostname}`;
-      if(process.env.DEBUG){
+      if(process.env.ENV === 'debug'){
         href = `${href}:${process.env.PORT}`
       }
       var logo = `${host}/images/logo.png`;
