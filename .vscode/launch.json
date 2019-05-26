@@ -10,7 +10,26 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceFolder}/bin/www",
-            "runtimeExecutable": "${env:HOME}/.nvm/v10.8.0/bin/node"
+            "runtimeExecutable": "${env:HOME}/.nvm/v10.8.0/bin/node",
+            "preLaunchTask": "build"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch",
+            "program": "${workspaceFolder}/bin/www",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "build",
+            "runtimeExecutable": null,
+            "runtimeArgs": [ "--nolazy" ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "console": "externalTerminal",
+            "sourceMaps": true,
+            "outFiles": ["${workspaceRoot}/dist/"]
         }
     ]
 }

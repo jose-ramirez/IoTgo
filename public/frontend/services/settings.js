@@ -2,9 +2,10 @@ angular.module('iotgo')
 
 .factory('Settings', [ '$location', function ($location) {
   var host = $location.host() + ':' + $location.port();
-
+  var protocol = $location.protocol()
+  var wsProtocol = protocol === 'https' ? 'wss' : 'ws'
   return {
-    httpServer: 'https://' + host,
-    websocketServer: 'ws://' + host
+    httpServer: `${protocol}://${host}`,
+    websocketServer: `${wsProtocol}://${host}`
   };
 } ]);

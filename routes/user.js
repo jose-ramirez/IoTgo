@@ -101,11 +101,15 @@ exports.route('/register').post(function (req, res) {
               res.send({error: err});
               return;
             }
-            var host = req.get('Host');
-            var href = "https://" + host;
-            href += '/api/user/validate?email=' + email + '&token=' + token;
+            var href = `${req.protocol}://${req.hostname}`;
+            if(process.env.DEBUG){
+              href = `${href}:${process.env.PORT}`
+            }
+            var logo = `${href}/images/logo.png`;
+            var activateAccountUrl = `${href}/api/user/validate?email=${email}&token=${token}`;
+            var _user = {email: email, href: activateAccountUrl, logo: logo};
             if (user) {
-              var _user = {email: email, href: href};
+              var _user = {email: email, href: activateAccountUrl};
               var html = jade.renderFile(path.join(__dirname, '../template/activeEmail.jade'), {user: _user});
               var mailOption = {
                 to: email,
@@ -149,11 +153,13 @@ exports.route('/activeAccount').get(function (req, res) {
       return;
     }
     if (user) {
-      var host = req.get('Host');
-      var href = "https://" + host;
-      var logo = href +'/images/logo.png';
-      href += '/api/user/validate?email=' + email + '&token=' + token;
-      var _user = {email: email, href: href, logo: logo};
+      var href = `${req.protocol}://${req.hostname}`;
+      if(process.env.DEBUG){
+        href = `${href}:${process.env.PORT}`
+      }
+      var logo = `${host}/images/logo.png`;
+      var activatedAccountUrl = `${href}/api/user/validate?email=${email}&token=${token}`;
+      var _user = {email: email, href: activatedAccountUrl, logo: logo};
       var html = jade.renderFile(path.join(__dirname, '../template/activeEmail.jade'), {user: _user});
       var mailOption = {
         to: email,
