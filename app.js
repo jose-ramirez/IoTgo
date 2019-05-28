@@ -13,11 +13,11 @@ if(process.env.ENV === 'debug'){
 }
 
 // web app backend
-app.use('/admin', favicon(__dirname + '/public/backend/favicon.png'));
-app.use('/admin', express.static(__dirname + '/public/backend'));
+// app.use('/admin', favicon(__dirname + '/public/backend/favicon.png'));
+// app.use('/admin', express.static(__dirname + '/public/backend'));
 // web app frontend
-app.use(favicon(__dirname + '/public/frontend/favicon.png'));
-app.use(express.static(__dirname + '/public/frontend'));
+// app.use(favicon(__dirname + '/public/frontend/favicon.png'));
+// app.use(express.static(__dirname + '/public/frontend'));
 
 var accessLogStream = fs.createWriteStream(__dirname + '/access.log', {flags: 'a'})
 app.use(logger('combined',  {"stream": accessLogStream}));
