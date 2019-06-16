@@ -90,7 +90,7 @@ exports.route('/register').post(function (req, res) {
 
         User.register(email, password, function (err, user) {
           if (err) {
-            res.send({
+            res.status(400).send({
               error: 'Email address already exists, please choose another one.'
             });
             return;
@@ -212,7 +212,7 @@ exports.route('/login').post(function (req, res) {
 
   User.authenticate(email, password, function (err, user) {
     if (err || !user) {
-      res.send({
+      res.status(401).send({
         error: 'Email address or password is not correct!'
       });
       return;
