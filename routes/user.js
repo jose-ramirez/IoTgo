@@ -149,7 +149,7 @@ exports.route('/activeAccount').get(function (req, res) {
   var token = uuid.v4();
   User.resetToken(email, token, function (err, user, msg) {
     if (err) {
-      res.send({error: err});
+      res.status(500).send({error: JSON.stringify(err)});
       return;
     }
     if (user) {
@@ -168,7 +168,7 @@ exports.route('/activeAccount').get(function (req, res) {
       };
       email_util.sendMail(mailOption, function (err, body) {
         if (err) {
-          res.send({error: err});
+          res.status(500).send({error: JSON.stringify(err)});
           return;
         }
         res.send({message: msg});
@@ -232,7 +232,7 @@ exports.route('/password').post(function (req, res) {
 
   if (typeof oldPassword !== 'string' || !oldPassword.trim() ||
     typeof newPassword !== 'string' || !newPassword.trim()) {
-    res.send({
+    res.status(400).send({
       error: 'Old password and new password must not be empty!'
     });
     return;
@@ -240,14 +240,14 @@ exports.route('/password').post(function (req, res) {
 
   User.authenticate(req.user.email, oldPassword, function (err, user) {
     if (err) {
-      res.send({
-        error: 'Change password failed!'
+      res.status(500).send({
+        error: JSON.stringify(err)
       });
       return;
     }
 
     if (!user) {
-      res.send({
+      res.status(400).send({
         error: 'Old password is not correct!'
       });
       return;
@@ -255,8 +255,8 @@ exports.route('/password').post(function (req, res) {
 
     User.setPassword(req.user.email, newPassword, function (err) {
       if (err) {
-        res.send({
-          error: 'Change password failed!'
+        res.status(500).send({
+          error: JSON.stringify(err)
         });
         return;
       }
