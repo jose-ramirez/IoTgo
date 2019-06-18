@@ -269,8 +269,8 @@ exports.route('/password').post(function (req, res) {
 // Device management
 exports.route('/device').get(function (req, res) {
   Device.getDevicesByApikey(req.user.apikey, function (err, devices) {
-    if (err || !devices.length) {
-      res.send([]);
+    if (err || !devices) {
+      res.status(500).send({error: JSON.stringify(err)});
       return;
     }
 
